@@ -1,4 +1,4 @@
-package commands.modifier;
+package commands.section;
 
 import commands.Command;
 import constants.Blanks;
@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class NewModifierCommand implements Command {
+public class NewSectionCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher(Blanks.NEW_MODIFIER_PAGE);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(Blanks.NEW_SECTION_PAGE);
         dispatcher.forward(request, response);
     }
 }

@@ -2,8 +2,9 @@ package commands.classes;
 
 import commands.Command;
 import constants.Blanks;
-import dao.ModifierDAO;
-import entities.Modifier;
+import dao.SectionDAO;
+import entities.Content;
+import entities.Section;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,16 +15,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class NewClassCommand implements Command {
-    private ModifierDAO modifierDAO;
+    private SectionDAO sectionDAO;
 
-    public NewClassCommand(ModifierDAO modifierDAO) {
-        this.modifierDAO = modifierDAO;
+    public NewClassCommand(SectionDAO sectionDAO) {
+        this.sectionDAO = sectionDAO;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        List<Modifier> listModifier = modifierDAO.listAllModifiers();
-        request.setAttribute("modifiers", listModifier);
+        List<Section> listSection = sectionDAO.listSections();
+        Content content = new Content();
+        request.setAttribute("cont", content);
+        request.setAttribute("sections", listSection);
         RequestDispatcher dispatcher = request.getRequestDispatcher(Blanks.NEW_CLASS_PAGE);
         dispatcher.forward(request, response);
     }

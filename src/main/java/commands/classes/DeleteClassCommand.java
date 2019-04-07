@@ -1,6 +1,8 @@
 package commands.classes;
 
 import commands.Command;
+import constants.Blanks;
+import constants.URL;
 import dao.ClassDAO;
 import entities.Class;
 
@@ -19,9 +21,10 @@ public class DeleteClassCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         int id = Integer.parseInt(request.getParameter("id"));
+        int section = Integer.parseInt(request.getParameter("section"));
 
         Class cls = new Class(id);
         classDAO.deleteClass(cls);
-        response.sendRedirect("list");
+        response.sendRedirect(Blanks.BASE_URL + URL.LIST_CLASS + "?id=" + section);
     }
 }

@@ -21,14 +21,24 @@
         <filter-class>filter.VocabularyFilter</filter-class>
     </filter>
 
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>filter.EncodingFilter</filter-class>
+    </filter>
+
     <servlet>
-        <servlet-name>modifier</servlet-name>
-        <servlet-class>servlets.ModifierServlet</servlet-class>
+        <servlet-name>section</servlet-name>
+        <servlet-class>servlets.SectionServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>modifier</servlet-name>
-        <url-pattern>/modifier/*</url-pattern>
+        <servlet-name>section</servlet-name>
+        <url-pattern>/section/*</url-pattern>
     </servlet-mapping>
 
 

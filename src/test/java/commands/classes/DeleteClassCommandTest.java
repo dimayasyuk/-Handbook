@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import constants.Blanks;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.eq;
@@ -49,8 +50,8 @@ public class DeleteClassCommandTest {
     public void execute() throws ServletException, IOException {
         initialClasses = new LinkedList<>();
         Date date = new Date(System.currentTimeMillis());
-        Class firstClass = new Class(1, "Command", "command", date, date, 1);
-        Class secondClass = new Class(2, "Singleton", "singleton", date, date, 1);
+        Class firstClass = new Class(1, "Command", "command", date, date, 1, 1);
+        Class secondClass = new Class(2, "Singleton", "singleton", date, date, 1, 1);
         initialClasses.add(firstClass);
         initialClasses.add(secondClass);
 
@@ -60,13 +61,14 @@ public class DeleteClassCommandTest {
             }
         };
 
-        Mockito.when(mockRequest.getRequestURI()).thenReturn(URL.DELETE_CLASS);
+        Mockito.when(mockRequest.getRequestURI()).thenReturn(Blanks.BASE_URL + URL.DELETE_CLASS);
 
         Mockito.doReturn("jdbc:mysql://localhost:3306/vocabulary?serverTimezone=UTC").when(servletContext).getInitParameter("jdbcURL");
         Mockito.doReturn("root").when(servletContext).getInitParameter("jdbcUsername");
         Mockito.doReturn("12345").when(servletContext).getInitParameter("jdbcPassword");
 
         Mockito.when(mockRequest.getParameter(eq("id"))).thenReturn(Integer.toString(firstClass.getId()));
+        Mockito.when(mockRequest.getParameter(eq("section"))).thenReturn(Integer.toString(firstClass.getContentId()));
 
         classServlet.init();
         classServlet.setClassDAO(classDAO);

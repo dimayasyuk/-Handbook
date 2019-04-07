@@ -9,6 +9,7 @@ public class Class {
     private Date created;
     private Date modified;
     private int modifierId;
+    private int contentId;
 
     public Class() {
     }
@@ -25,6 +26,25 @@ public class Class {
         this.modifierId = modifierId;
     }
 
+    public Class(String name, String description, Date created, Date modified, int modifierId, int contentId) {
+        this.name = name;
+        this.description = description;
+        this.created = created;
+        this.modified = modified;
+        this.modifierId = modifierId;
+        this.contentId = contentId;
+    }
+
+    public Class(int id, String name, String description, Date created, Date modified, int modifierId, int contentId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.created = created;
+        this.modified = modified;
+        this.modifierId = modifierId;
+        this.contentId = contentId;
+    }
+
     public Class(int id, String name, String description, Date created, Date modified, int modifierId) {
         this.id = id;
         this.name = name;
@@ -32,6 +52,14 @@ public class Class {
         this.created = created;
         this.modified = modified;
         this.modifierId = modifierId;
+    }
+
+    public int getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(int contentId) {
+        this.contentId = contentId;
     }
 
     public String getName() {

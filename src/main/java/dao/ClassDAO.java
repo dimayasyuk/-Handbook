@@ -2,7 +2,6 @@ package dao;
 
 import connection.JDBC;
 import entities.Class;
-import entities.Modifier;
 
 import java.io.IOException;
 import java.sql.*;
@@ -23,7 +22,7 @@ public class ClassDAO {
     }
 
     public boolean insertClass(Class cls) throws SQLException, IOException {
-        String sql = "INSERT INTO class (name, description, created, modified, modifierId) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO class (name, description, created, modified, modifierId, contentId) VALUES (?, ?, ?, ?, ?, ?)";
         Connection connection = JDBC.connect(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
 
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -32,6 +31,7 @@ public class ClassDAO {
         statement.setDate(3, cls.getCreated());
         statement.setDate(4, cls.getModified());
         statement.setInt(5, cls.getModifierId());
+        statement.setInt(6, cls.getContentId());
         boolean row = (statement.executeUpdate()) > 0;
 
         statement.close();
@@ -40,10 +40,10 @@ public class ClassDAO {
         return row;
     }
 
-    public List<Class> listAllClasses() throws SQLException, IOException {
+    public List<Class> listAllClasses(int page, int recordsPerPage) throws SQLException, IOException {
         List<Class> listClass = new ArrayList<>();
 
-        String sql = "SELECT * FROM class";
+        String sql = "SELECT * FROM class limit " + page + ", " + recordsPerPage;
 
         Connection connection = JDBC.connect(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
 
@@ -57,8 +57,40 @@ public class ClassDAO {
             Date created = resultSet.getDate("created");
             Date modified = resultSet.getDate("modified");
             int modifiedId = resultSet.getInt("modifierId");
+            int contentId = resultSet.getInt("contentId");
 
-            Class cls = new Class(id, name, description, created, modified, modifiedId);
+            Class cls = new Class(id, name, description, created, modified, modifiedId, contentId);
+            listClass.add(cls);
+        }
+
+        resultSet.close();
+        statement.close();
+
+        JDBC.closeConnection();
+
+        return listClass;
+    }
+
+    public List<Class> listClassesById(int page, int recordsPerPage, int sectionId) throws SQLException, IOException {
+        List<Class> listClass = new ArrayList<>();
+
+        String sql = "SELECT * FROM class where modifierId=" + sectionId + " limit " + page + ", " + recordsPerPage;
+
+        Connection connection = JDBC.connect(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            Date created = resultSet.getDate("created");
+            Date modified = resultSet.getDate("modified");
+            int modifierId = resultSet.getInt("modifierId");
+            int contentId = resultSet.getInt("contentId");
+
+            Class cls = new Class(id, name, description, created, modified, modifierId, contentId);
             listClass.add(cls);
         }
 
@@ -87,8 +119,9 @@ public class ClassDAO {
             Date created = resultSet.getDate("created");
             Date modified = resultSet.getDate("modified");
             int modifierId = Integer.valueOf(resultSet.getString("modifierId"));
+            int contentId = resultSet.getInt("contentId");
 
-            cls = new Class(id, name, description, created, modified, modifierId);
+            cls = new Class(id, name, description, created, modified, modifierId, contentId);
         }
 
         resultSet.close();
@@ -131,15 +164,17 @@ public class ClassDAO {
         return count;
     }
 
-    public void cleanDatabase() throws IOException, SQLException {
-        String sql = "DELETE FROM class";
+    public int countClassesById(int id) throws IOException, SQLException {
+        String sql = "SELECT COUNT(*) as count FROM class where modifierId=" + id;
 
         Connection connection = JDBC.connect(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
 
-        PreparedStatement statement = connection.prepareStatement(sql);
-        boolean count = statement.executeUpdate() > 0;
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        if(resultSet.next()){
+            return resultSet.getInt("count");
+        }
 
-        statement.close();
-        JDBC.closeConnection();
+        return 0;
     }
 }

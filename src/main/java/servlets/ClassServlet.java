@@ -2,10 +2,11 @@ package servlets;
 
 import commands.Command;
 import commands.classes.*;
-import commands.modifier.InsertModifierCommand;
 import constants.URL;
 import dao.ClassDAO;
-import dao.ModifierDAO;
+import dao.ContentDAO;
+import dao.SectionDAO;
+import constants.Blanks;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +19,8 @@ import java.util.Map;
 
 public class ClassServlet extends HttpServlet {
     private ClassDAO classDAO;
-    private ModifierDAO modifierDAO;
+    private SectionDAO sectionDAO;
+    private ContentDAO contentDAO;
     private Map<String, Command> classCommands;
 
 
@@ -28,14 +30,14 @@ public class ClassServlet extends HttpServlet {
         String action = req.getRequestURI();
 
         try {
-            classCommands.getOrDefault(action, classCommands.get(URL.LIST_CLASS)).execute(req, resp);
+            classCommands.getOrDefault(action, classCommands.get(Blanks.BASE_URL + URL.LIST_CLASS)).execute(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
 
@@ -47,7 +49,8 @@ public class ClassServlet extends HttpServlet {
         String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 
         classDAO = new ClassDAO(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
-        modifierDAO = new ModifierDAO(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
+        sectionDAO = new SectionDAO(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
+        contentDAO = new ContentDAO(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
         initCommands();
     }
 
@@ -56,24 +59,30 @@ public class ClassServlet extends HttpServlet {
         initCommands();
     }
 
-    public void setModifierDAO(ModifierDAO modifierDAO) {
-        this.modifierDAO = modifierDAO;
+    public void setContentDAO(ContentDAO contentDAO) {
+        this.contentDAO = contentDAO;
         initCommands();
     }
 
-    public void setDAO(ClassDAO classDAO, ModifierDAO modifierDAO) {
+    public void setModifierDAO(SectionDAO sectionDAO) {
+        this.sectionDAO = sectionDAO;
+        initCommands();
+    }
+
+    public void setDAO(ClassDAO classDAO, SectionDAO sectionDAO) {
         this.classDAO = classDAO;
-        this.modifierDAO = modifierDAO;
+        this.sectionDAO = sectionDAO;
         initCommands();
     }
 
     private void initCommands() {
         classCommands = new LinkedHashMap<>();
-        classCommands.put(URL.NEW_CLASS, new NewClassCommand(modifierDAO));
-        classCommands.put(URL.LIST_CLASS, new ListClassCommand(modifierDAO, classDAO));
-        classCommands.put(URL.DELETE_CLASS, new DeleteClassCommand(classDAO));
-        classCommands.put(URL.EDIT_CLASS, new EditClassCommand(modifierDAO, classDAO));
-        classCommands.put(URL.INSERT_CLASS, new InsertClassCommand(classDAO));
-        classCommands.put(URL.UPDATE_CLASS, new UpdateClassCommand(classDAO));
+        classCommands.put(Blanks.BASE_URL + URL.NEW_CLASS, new NewClassCommand(sectionDAO));
+        classCommands.put(Blanks.BASE_URL + URL.SHOW_CLASS, new ShowClassCommand(classDAO, contentDAO, sectionDAO));
+        classCommands.put(Blanks.BASE_URL + URL.LIST_CLASS, new ListClassCommand(sectionDAO, classDAO));
+        classCommands.put(Blanks.BASE_URL + URL.DELETE_CLASS, new DeleteClassCommand(classDAO));
+        classCommands.put(Blanks.BASE_URL + URL.EDIT_CLASS, new EditClassCommand(sectionDAO, classDAO, contentDAO));
+        classCommands.put(Blanks.BASE_URL + URL.INSERT_CLASS, new InsertClassCommand(classDAO, contentDAO));
+        classCommands.put(Blanks.BASE_URL + URL.UPDATE_CLASS, new UpdateClassCommand(classDAO, contentDAO));
     }
 }

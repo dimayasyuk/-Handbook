@@ -1,9 +1,10 @@
 package servlets;
 
 import commands.Command;
-import commands.modifier.*;
+import commands.section.*;
 import constants.URL;
-import dao.ModifierDAO;
+import dao.SectionDAO;
+import constants.Blanks;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,17 +15,17 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ModifierServlet extends HttpServlet {
+public class SectionServlet extends HttpServlet {
 
-    private ModifierDAO modifierDAO;
-    private Map<String, Command> modifierCommands;
+    private SectionDAO sectionDAO;
+    private Map<String, Command> sectionCommands;
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getRequestURI();
 
         try {
-            modifierCommands.getOrDefault(action, modifierCommands.get(URL.LIST_MODIFIER)).execute(req, resp);
+            sectionCommands.getOrDefault(action, sectionCommands.get(URL.LIST_SECTION)).execute(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,23 +43,23 @@ public class ModifierServlet extends HttpServlet {
         String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
         String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 
-        modifierDAO = new ModifierDAO(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
+        sectionDAO = new SectionDAO(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
         initCommands();
 
     }
 
-    public void setModifierDAO(ModifierDAO modifierDAO) {
-        this.modifierDAO = modifierDAO;
+    public void setSectionDAO(SectionDAO sectionDAO) {
+        this.sectionDAO = sectionDAO;
         initCommands();
     }
 
     private void initCommands() {
-        modifierCommands = new LinkedHashMap<>();
-        modifierCommands.put(URL.NEW_MODIFIER, new NewModifierCommand());
-        modifierCommands.put(URL.LIST_MODIFIER, new ListModifierCommand(modifierDAO));
-        modifierCommands.put(URL.DELETE_MODIFIER, new DeleteModifierCommand(modifierDAO));
-        modifierCommands.put(URL.EDIT_MODIFIER, new EditModifierCommand(modifierDAO));
-        modifierCommands.put(URL.INSERT_MODIFIER, new InsertModifierCommand(modifierDAO));
-        modifierCommands.put(URL.UPDATE_MODIFIER, new UpdateModifierCommand(modifierDAO));
+        sectionCommands = new LinkedHashMap<>();
+        sectionCommands.put(Blanks.BASE_URL + URL.NEW_SECTION, new NewSectionCommand());
+        sectionCommands.put(Blanks.BASE_URL + URL.LIST_SECTION, new ListSectionCommand(sectionDAO));
+        sectionCommands.put(Blanks.BASE_URL + URL.DELETE_SECTION, new DeleteSectionCommand(sectionDAO));
+        sectionCommands.put(Blanks.BASE_URL + URL.EDIT_SECTION, new EditSectionCommand(sectionDAO));
+        sectionCommands.put(Blanks.BASE_URL + URL.INSERT_SECTION, new InsertSectionCommand(sectionDAO));
+        sectionCommands.put(Blanks.BASE_URL + URL.UPDATE_SECTION, new UpdateSectionCommand(sectionDAO));
     }
 }

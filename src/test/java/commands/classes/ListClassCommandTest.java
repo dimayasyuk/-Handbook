@@ -3,8 +3,8 @@ package commands.classes;
 import constants.Blanks;
 import constants.URL;
 import dao.ClassDAO;
-import dao.ModifierDAO;
 import entities.Class;
+import entities.Section;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -37,7 +37,9 @@ public class ListClassCommandTest {
         mockRequest = Mockito.mock(HttpServletRequest.class);
         classDAO = Mockito.mock(ClassDAO.class);
         Mockito.doAnswer((args) -> {
-            neededClasses = args.getArgument(1);
+            if (args.getArgument(1) instanceof List<?>) {
+                neededClasses = args.getArgument(1);
+            }
             return null;
         }).when(mockRequest).setAttribute(Mockito.any(), Mockito.any());
         mockResponse = Mockito.mock(HttpServletResponse.class);
@@ -52,19 +54,26 @@ public class ListClassCommandTest {
             }
         };
         RequestDispatcher requestDispatcher = Mockito.mock(RequestDispatcher.class);
+        Section section = new Section(1,"C++", "C++");
+        int currentPage = 1;
+        int recordsPerPage = 5;
 
-        Mockito.when(mockRequest.getRequestURI()).thenReturn(URL.LIST_CLASS);
+        Mockito.when(mockRequest.getRequestURI()).thenReturn(Blanks.BASE_URL + URL.LIST_CLASS + "?id=" + section.getId());
 
         Mockito.doReturn("jdbc:mysql://localhost:3306/vocabulary?serverTimezone=UTC").when(servletContext).getInitParameter("jdbcURL");
         Mockito.doReturn("root").when(servletContext).getInitParameter("jdbcUsername");
         Mockito.doReturn("12345").when(servletContext).getInitParameter("jdbcPassword");
 
-        Mockito.doReturn(initialClasses).when(classDAO).listAllClasses();
+
+        Mockito.doReturn(initialClasses).when(classDAO).listClassesById(0, 5, section.getId());
         Mockito.when(mockRequest.getRequestDispatcher(eq(Blanks.LIST_CLASS_PAGE))).thenReturn(requestDispatcher);
+        Mockito.when(mockRequest.getParameter(eq("currentPage"))).thenReturn(Integer.toString(currentPage));
+        Mockito.when(mockRequest.getParameter(eq("recordsPerPage"))).thenReturn(Integer.toString(recordsPerPage));
+        Mockito.when(mockRequest.getParameter(eq("id"))).thenReturn(Integer.toString(section.getId()));
 
         classServlet.init();
         classServlet.setClassDAO(classDAO);
-        classServlet.doGet(mockRequest, mockResponse);
+        classServlet.doPost(mockRequest, mockResponse);
 
         assertEquals(neededClasses, initialClasses);
     }

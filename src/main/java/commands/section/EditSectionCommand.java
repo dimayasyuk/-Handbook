@@ -1,9 +1,9 @@
-package commands.modifier;
+package commands.section;
 
 import commands.Command;
 import constants.Blanks;
-import dao.ModifierDAO;
-import entities.Modifier;
+import dao.SectionDAO;
+import entities.Section;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,19 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class EditModifierCommand implements Command {
-    private ModifierDAO modifierDAO;
+public class EditSectionCommand implements Command {
+    private SectionDAO sectionDAO;
 
-    public EditModifierCommand(ModifierDAO modifierDAO) {
-        this.modifierDAO = modifierDAO;
+    public EditSectionCommand(SectionDAO sectionDAO) {
+        this.sectionDAO = sectionDAO;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         int id = Integer.parseInt(request.getParameter("id"));
-        Modifier existingModifier = modifierDAO.getModifier(id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher(Blanks.NEW_MODIFIER_PAGE);
-        request.setAttribute("modifier", existingModifier);
+        Section existingSection = sectionDAO.getSection(id);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(Blanks.NEW_SECTION_PAGE);
+        request.setAttribute("section", existingSection);
         dispatcher.forward(request, response);
     }
 }

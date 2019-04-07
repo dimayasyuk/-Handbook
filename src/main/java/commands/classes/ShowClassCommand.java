@@ -17,13 +17,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class EditClassCommand implements Command {
-    private SectionDAO sectionDAO;
+public class ShowClassCommand implements Command {
     private ClassDAO classDAO;
     private ContentDAO contentDAO;
 
-    public EditClassCommand(SectionDAO sectionDAO, ClassDAO classDAO, ContentDAO contentDAO) {
-        this.sectionDAO = sectionDAO;
+    public ShowClassCommand(ClassDAO classDAO, ContentDAO contentDAO, SectionDAO sectionDAO) {
         this.classDAO = classDAO;
         this.contentDAO = contentDAO;
     }
@@ -32,13 +30,11 @@ public class EditClassCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         int id = Integer.parseInt(request.getParameter("id"));
         Class existingClass = classDAO.getClassById(id);
-        List<Section> listSection = sectionDAO.listSections();
         Content content = contentDAO.getContentById(existingClass.getContentId());
-        RequestDispatcher dispatcher = request.getRequestDispatcher(Blanks.NEW_CLASS_PAGE);
-        request.setAttribute("cls", existingClass);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(Blanks.DETAIL_CLASS_PAGE);
         request.setAttribute("cont", content);
-        request.setAttribute("sections", listSection);
-
+        request.setAttribute("cls", existingClass);
         dispatcher.forward(request, response);
+
     }
 }
