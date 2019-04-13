@@ -7,9 +7,15 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class InfoTimeTag extends TagSupport {
+	private String link;
+	private String author;
+
+	public void setLink(String link) { this.link = link;      }
+    public void setAuthor(String author) { this.author = author;      }
+
     @Override
     public int doStartTag() throws JspException {
-        String footerContent = "<footer><p>Created by: <a href=\"https://vk.com/id139357398\">Dmitry Yasiukevich</a>.</p></footer>";
+        String footerContent = "<footer><p>Created by: <a href=" + link + ">" + author + "</a>.</p></footer>";
         try {
             JspWriter out = pageContext.getOut();
             out.write(footerContent);
