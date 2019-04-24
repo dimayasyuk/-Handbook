@@ -16,7 +16,14 @@ public class URL {
     public static final String DELETE_CLASS = "/class/delete";
     public static final String EDIT_CLASS = "/class/edit";
 
+    public static final String LIST_USER = "/user/list";
+    public static final String LOGIN = "/login";
+
     public static final String CLASS_FILTER = "/class";
     public static final String MODIFIER_FILTER = "/section";
     public static final String START_FILTER = "/index.jsp";
+    public static final String VK_AUTHORIZATION_FILTER = "/authorization/vk";
+
+    public static final String VK_AUTHORIZATION = "/authorization/vk/auth";
+    public static final String VK_TOKEN = "/authorization/vk/token";
 }

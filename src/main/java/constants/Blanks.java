@@ -9,6 +9,16 @@ public class Blanks {
 
     public static final String DETAIL_CLASS_PAGE = "/WEB-INF/views/detailClass.jsp";
 
+    public static final String REGISTRATION_FORM = "/WEB-INF/views/registration.jsp";
+
+    public static final String ADMIN_HOME = "/WEB-INF/views/admin.jsp";
+
+    public static final String LOGIN_PAGE = "/WEB-INF/views/login.jsp";
+
+
+
+
+
     public static final String NOT_FOUND_PAGE = "/WEB-INF/views/not-found.jsp";
 
     public static final String BASE_URL = "/server";

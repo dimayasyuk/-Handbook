@@ -10,10 +10,15 @@
         <name>info-time</name>
         <tag-class>tag.InfoTimeTag</tag-class>
         <body-content>empty</body-content>
-		<attribute>
-		<name>link</name>
-		<required>true</required>
-		<rtexprvalue>true</rtexprvalue>
-		</attribute>
+        <attribute>
+            <name>link</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>author</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
 </taglib>

@@ -5,15 +5,20 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/server/section/new">Add New Section</a>
+                <a class="nav-link ml-2" href="/server/section/new">Add New Section</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/server/section/list">List All Sections</a>
+                <a class="nav-link ml-2" href="/server/section/list">List All Sections</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/server/class/new">Add New Class</a>
+                <a class="nav-link ml-2" href="/server/class/new">Add New Class</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-4">
+            <li class="nav-item active">
+                <a class="nav-link" href="/server/logout">SignOut</a>
             </li>
         </ul>
     </div>

@@ -18,23 +18,26 @@ public class VocabularyFilter implements Filter {
         url.add(URL.START_FILTER);
         url.add(URL.MODIFIER_FILTER);
         url.add(URL.CLASS_FILTER);
+        url.add(URL.VK_AUTHORIZATION_FILTER);
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         unitUrl();
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) servletRequest;
-        for (String path : url) {
-            if (path.equals(req.getServletPath())) {
-                filterChain.doFilter(servletRequest, servletResponse);
-                return;
-            }
-        }
-        servletRequest.getServletContext().getRequestDispatcher(Blanks.NOT_FOUND_PAGE).forward(servletRequest, servletResponse);
+//        HttpServletRequest req = (HttpServletRequest) servletRequest;
+//        for (String path : url) {
+//            if (path.equals(req.getServletPath())) {
+//                filterChain.doFilter(servletRequest, servletResponse);
+//                return;
+//            }
+//        }
+//        servletRequest.getServletContext().getRequestDispatcher(Blanks.NOT_FOUND_PAGE).forward(servletRequest, servletResponse);
+
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

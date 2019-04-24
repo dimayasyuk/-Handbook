@@ -4,6 +4,6 @@
 <html>
 <head>
     <title>C++ vocabulary</title>
-    <c:redirect url="http://localhost:8080/server/section/list"/>
+    <jsp:forward page="WEB-INF/views/login.jsp"/>
 </head>
 </html>

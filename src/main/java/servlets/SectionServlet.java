@@ -25,7 +25,7 @@ public class SectionServlet extends HttpServlet {
         String action = req.getRequestURI();
 
         try {
-            sectionCommands.getOrDefault(action, sectionCommands.get(URL.LIST_SECTION)).execute(req, resp);
+            sectionCommands.getOrDefault(action, sectionCommands.get(Blanks.BASE_URL + URL.LIST_SECTION)).execute(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
