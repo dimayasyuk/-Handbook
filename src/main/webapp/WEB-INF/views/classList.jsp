@@ -16,14 +16,17 @@
                     <div class="d-flex w-100 justify-content-between">
                         <a href="/server/class/show?id=<c:out value='${cls.id}'/>"><h5 class="mb-1"><c:out
                                 value="${cls.name}"/></h5></a>
-                        <small class="text-muted">
-                            <input style="color: red" value="Delete" type="button"
-                                   onclick="location.href='/server/class/delete?id=<c:out value='${cls.id}'/>&section=<c:out
-                                           value='${cls.modifierId}'/>'"/>
-                            <input style="color: forestgreen" value="Edit" type="button"
-                                   onclick="location.href='/server/class/edit?id=<c:out
-                                           value='${cls.id}'/>'"/>
-                        </small>
+                        <c:if test="${sessionScope.get('role') eq 'moderator'}">
+                            <small class="text-muted">
+                                <input style="color: red" value="Delete" type="button"
+                                       onclick="location.href='/server/class/delete?id=<c:out
+                                               value='${cls.id}'/>&section=<c:out
+                                               value='${cls.modifierId}'/>'"/>
+                                <input style="color: forestgreen" value="Edit" type="button"
+                                       onclick="location.href='/server/class/edit?id=<c:out
+                                               value='${cls.id}'/>'"/>
+                            </small>
+                        </c:if>
                     </div>
                     <p class="mb-1 text-left"><c:out value="${cls.description}"/></p>
                     <small class="text-muted">Created: <c:out value='${cls.created}'/></small>
@@ -31,7 +34,7 @@
                 </div>
             </c:forEach>
         </div>
-            <input type="hidden" name="id" value="<c:out value='${id}' />"/>
+        <input type="hidden" name="id" value="<c:out value='${id}' />"/>
         <c:if test="${number > 0}">
             <nav aria-label="Navigation for classes">
                 <ul class="pagination">

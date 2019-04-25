@@ -87,22 +87,22 @@
         <legend class="m-b-1 text-xs-center">Registration</legend>
         <div class="form-group input-group">
  <span class="has-float-label">
- <input class="form-control" id="name" name="name" type="text" placeholder="name"/>
+ <input class="form-control" id="name" name="name" type="text" placeholder="name" required="required"/>
  <label for="name">name</label>
  </span>
             <span class="has-float-label">
- <input class="form-control" id="surname" name="surname" type="text" placeholder="surname"/>
+ <input class="form-control" id="surname" name="surname" type="text" placeholder="surname" required="required"/>
  <label for="surname">surname</label>
  </span>
         </div>
         <div class="form-group input-group">
             <span class="has-float-label">
- <input class="form-control" id="login" name="login" type="text"/>
+ <input class="form-control" id="login" name="login" type="text" required="required"/>
  <label for="login">login</label>
  </span>
         </div>
         <div class="form-group has-float-label">
-            <input class="form-control" id="password" name="password" type="password" placeholder="••••••••"/>
+            <input class="form-control" id="password" name="password" type="password" placeholder="••••••••" required="required"/>
             <label for="password">password</label>
         </div>
         <div class="text-xs-center">

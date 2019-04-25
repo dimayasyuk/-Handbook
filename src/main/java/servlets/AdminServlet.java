@@ -1,7 +1,9 @@
 package servlets;
 
 import commands.Command;
+import commands.admin.DeleteUserCommand;
 import commands.admin.GetHomeAdminPageCommand;
+import commands.admin.UpdateUserCommand;
 import constants.Blanks;
 import constants.URL;
 import dao.UserDao;
@@ -48,7 +50,9 @@ public class AdminServlet  extends HttpServlet {
 
     private void initCommands() {
         commands = new LinkedHashMap<>();
-        commands.put(Blanks.BASE_URL + URL.LIST_USER, new GetHomeAdminPageCommand());
+        commands.put(Blanks.BASE_URL + URL.LIST_USER, new GetHomeAdminPageCommand(userDao));
+        commands.put(Blanks.BASE_URL + URL.DELETE_USER, new DeleteUserCommand(userDao));
+        commands.put(Blanks.BASE_URL + URL.UPDATE_USER, new UpdateUserCommand(userDao));
 
     }
 }

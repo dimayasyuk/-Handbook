@@ -89,6 +89,29 @@ public class UserDao {
         return role;
     }
 
+    public Role getRoleById(int id) throws SQLException, IOException {
+        Role role = null;
+        String sql = "SELECT * FROM role WHERE id = ?";
+
+        Connection connection = JDBC.connect(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, id);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            String name = resultSet.getString("name");
+            role = new Role(id, name);
+        }
+
+        resultSet.close();
+        statement.close();
+        JDBC.closeConnection();
+
+        return role;
+    }
+
     public List<User> getBulkOfUsers(int page, int recordsPerPage) throws SQLException, IOException {
         List<User> users = new ArrayList<>();
 
@@ -119,13 +142,13 @@ public class UserDao {
         return users;
     }
 
-    public boolean deleteUser(User user) throws SQLException, IOException {
+    public boolean deleteUser(int id) throws SQLException, IOException {
         String sql = "DELETE FROM users where id = ?";
 
         Connection connection = JDBC.connect(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, user.getId());
+        statement.setInt(1, id);
         boolean count = statement.executeUpdate() > 0;
 
         statement.close();
@@ -134,17 +157,13 @@ public class UserDao {
         return count;
     }
 
-    public boolean updateUser(User user) throws SQLException, IOException {
-        String sql = "UPDATE users SET name = ?, surname = ?, login = ?, password = ?, roleId = ?  WHERE id = ?";
+    public boolean updateUser(int id, int roleId) throws SQLException, IOException {
+        String sql = "UPDATE users SET roleId = ? WHERE id = ?";
         Connection connection = JDBC.connect(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, user.getName());
-        statement.setString(2, user.getSurname());
-        statement.setString(3, user.getLogin());
-        statement.setString(4, user.getPassword());
-        statement.setInt(5, user.getRoleId());
-        statement.setInt(6, user.getId());
+        statement.setInt(1, roleId);
+        statement.setInt(2, id);
         boolean count = statement.executeUpdate() > 0;
 
         statement.close();
@@ -159,6 +178,34 @@ public class UserDao {
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, login);
+
+        ResultSet resultSet = statement.executeQuery();
+        User user = null;
+
+        if (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String surname = resultSet.getString("surname");
+            String password = resultSet.getString("password");
+            int roleId = resultSet.getInt("roleId");
+
+            user = new User(id, name, surname, login, password, roleId);
+        }
+
+        resultSet.close();
+        statement.close();
+        JDBC.closeConnection();
+
+        return user;
+    }
+
+    public User getUserByLoginAndPassword(String login, String pass) throws SQLException, IOException {
+        String sql = "SELECT * FROM users WHERE login = ? and password = ?";
+        Connection connection = JDBC.connect(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, login);
+        statement.setString(2, pass);
 
         ResultSet resultSet = statement.executeQuery();
         User user = null;

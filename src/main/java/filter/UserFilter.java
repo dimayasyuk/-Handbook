@@ -9,14 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
-public class VocabularyFilter implements Filter {
-
+public class UserFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) {
-    }
+    public void init(FilterConfig filterConfig) { }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -25,14 +21,13 @@ public class VocabularyFilter implements Filter {
 
         HttpSession session = req.getSession(true);
 
-        if (session.getAttribute("role").equals(Constants.ADMIN_ROLE)) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
+        if(session.getAttribute("user")== null || session.getAttribute("role").equals(Constants.ADMIN_ROLE)) {
             res.sendRedirect(Blanks.BASE_URL + URL.LOGIN);
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 
     @Override
-    public void destroy() {
-    }
+    public void destroy() { }
 }

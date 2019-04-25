@@ -17,6 +17,9 @@ public class URL {
     public static final String EDIT_CLASS = "/class/edit";
 
     public static final String LIST_USER = "/user/list";
+    public static final String DELETE_USER = "/user/delete";
+    public static final String UPDATE_USER = "/user/edit";
+
     public static final String LOGIN = "/login";
 
     public static final String CLASS_FILTER = "/class";

@@ -2,16 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>JeyRubyHandbook</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Administration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 <div align="center">
     <jsp:include page="/WEB-INF/views/header.jsp"></jsp:include>
     <div class="container">
-        <h2>Users</h2>
         <table class="table">
             <thead>
             <tr>
@@ -23,29 +21,63 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="user" items="${users}">
-                <tr>
-                    <td><c:out value="${user.login}"/></td>
-                    <td><c:out value="${user.name}"/></td>
-                    <td><c:out value="${user.surname}"/></td>
-                    <select class="form-control" id="role" name="role">
-                        <c:forEach var="role" items="${roles}">
-                            <option value="${user.roleId}" ${user.roleId == role.id ? 'selected="selected"' : ''}>${role.name}</option>
-                        </c:forEach>
-                    </select>
-                    <%--<td style="width: 170px">--%>
-                        <%--<button class="btn btn-primary" style="background-color: aliceblue;">--%>
-                            <%--<a href="edit?id=<c:out value='${role.id}' />">Save</a>--%>
-                        <%--</button>--%>
-                        <%--&nbsp;&nbsp;--%>
-                        <%--<button class="btn btn-primary" style="background-color: aliceblue;">--%>
-                            <%--<a href="delete?id=<c:out value='${category.id}' />">Delete</a>--%>
-                        <%--</button>--%>
-                    <%--</td>--%>
-                </tr>
+            <c:forEach var="item" items="${users}">
+                <form action="/server/user/edit" method="get">
+                    <input type="hidden" name="id" value="<c:out value='${item.id}' />"/>
+                    <tr style="height: 40px">
+                        <td><c:out value="${item.login}"/></td>
+                        <td><c:out value="${item.name}"/></td>
+                        <td><c:out value="${item.surname}"/></td>
+                        <td style="width: 150px; height: 30px">
+                            <label hidden for="rol">Role</label>
+                            <select class="form-control" id="rol" name="rol">
+                                <c:forEach var="rol" items="${roles}">
+                                    <option value="${rol.id}" ${item.roleId == rol.id ? 'selected="selected"' : ''}>${rol.name}</option>
+                                </c:forEach>
+                            </select>
+                        </td>
+                        <td>
+                            <input style="color: forestgreen" type="submit" class="btn" value="Save"/>
+                            <a class="btn" style="color: red" href="/server/user/delete?id=<c:out value='${item.id}' />">Delete</a>
+
+                        </td>
+                    </tr>
+                </form>
             </c:forEach>
             </tbody>
         </table>
+        <c:if test="${number > recordsPerPage}">
+            <nav aria-label="Navigation for users">
+                <ul class="pagination">
+                    <c:if test="${currentPage != 1}">
+                        <li class="page-item"><a class="page-link"
+                                                 href="list?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}">Previous</a>
+                        </li>
+                    </c:if>
+
+                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                        <c:choose>
+                            <c:when test="${currentPage eq i}">
+                                <li class="page-item active"><a class="page-link">
+                                        ${i} <span class="sr-only">(current)</span></a>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item"><a class="page-link"
+                                                         href="list?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+
+                    <c:if test="${currentPage lt noOfPages}">
+                        <li class="page-item"><a class="page-link"
+                                                 href="list?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
+                        </li>
+                    </c:if>
+                </ul>
+            </nav>
+        </c:if>
     </div>
 </div>
 </body>

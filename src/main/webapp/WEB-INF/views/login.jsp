@@ -79,17 +79,17 @@
 </head>
 <body>
 <div class="login-form">
-    <form action="/login" method="post">
+    <form action="/server/login" method="post">
         <h2 class="text-center">Sign in</h2>
         <div class="text-center social-btn">
-            <a href="/authorization/vk/auth" class="btn btn-primary btn-block"><i class="fa fa-vk"></i> Sign in with <b>VKontakte</b></a>
+            <a href="/server/authorization/vk/auth" class="btn btn-primary btn-block"><i class="fa fa-vk"></i> Sign in with <b>VKontakte</b></a>
             <a href="#" class="btn btn-danger btn-block"><i class="fa fa-google"></i> Sign in with <b>Google</b></a>
         </div>
         <div class="or-seperator"><i>or</i></div>
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+                <input type="text" class="form-control" name="login" placeholder="Username" required="required">
             </div>
         </div>
         <div class="form-group">

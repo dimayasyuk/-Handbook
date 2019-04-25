@@ -15,15 +15,20 @@
             <c:forEach var="section" items="${sections}">
                 <div class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1"><a href="/server/class/list?id=<c:out value='${section.id}'/>"><c:out value="${section.name}"/></a></h5>
-                        <small class="text-muted">
-                            <input style="color: red" value="Delete" type="button" onclick="location.href='/server/section/delete?id=<c:out
-                                    value='${section.id}'/>'" />
-                            <input style="color: forestgreen" value="Edit" type="button" onclick="location.href='/server/section/edit?id=<c:out
-                                    value='${section.id}'/>'" />
-                        </small>
+                        <h5 class="mb-1"><a href="/server/class/list?id=<c:out value='${section.id}'/>"><c:out
+                                value="${section.name}"/></a></h5>
+                        <c:if test="${sessionScope.get('role') eq 'moderator'}">
+                            <small class="text-muted">
+                                <input style="color: red" value="Delete" type="button"
+                                       onclick="location.href='/server/section/delete?id=<c:out
+                                               value='${section.id}'/>'"/>
+                                <input style="color: forestgreen" value="Edit" type="button"
+                                       onclick="location.href='/server/section/edit?id=<c:out
+                                               value='${section.id}'/>'"/>
+                            </small>
+                        </c:if>
                     </div>
-                    <p  class="mb-1 text-left"><c:out value="${section.description}"/></p>
+                    <p class="mb-1 text-left"><c:out value="${section.description}"/></p>
                 </div>
             </c:forEach>
         </div>
