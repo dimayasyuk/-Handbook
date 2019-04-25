@@ -127,10 +127,9 @@ public class UserDao {
             String name = resultSet.getString("name");
             String surname = resultSet.getString("surname");
             String login = resultSet.getString("login");
-            String password = resultSet.getString("password");
             int roleId = resultSet.getInt("roleId");
 
-            User user = new User(id, name, surname, login, password, roleId);
+            User user = new User(id, name, surname, login, roleId);
             users.add(user);
         }
 
@@ -186,10 +185,9 @@ public class UserDao {
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             String surname = resultSet.getString("surname");
-            String password = resultSet.getString("password");
             int roleId = resultSet.getInt("roleId");
 
-            user = new User(id, name, surname, login, password, roleId);
+            user = new User(id, name, surname, login, roleId);
         }
 
         resultSet.close();
@@ -214,10 +212,9 @@ public class UserDao {
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             String surname = resultSet.getString("surname");
-            String password = resultSet.getString("password");
             int roleId = resultSet.getInt("roleId");
 
-            user = new User(id, name, surname, login, password, roleId);
+            user = new User(id, name, surname, login, roleId);
         }
 
         resultSet.close();

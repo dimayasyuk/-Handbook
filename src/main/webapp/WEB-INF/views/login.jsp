@@ -83,7 +83,7 @@
         <h2 class="text-center">Sign in</h2>
         <div class="text-center social-btn">
             <a href="/server/authorization/vk/auth" class="btn btn-primary btn-block"><i class="fa fa-vk"></i> Sign in with <b>VKontakte</b></a>
-            <a href="#" class="btn btn-danger btn-block"><i class="fa fa-google"></i> Sign in with <b>Google</b></a>
+            <a href="/server/authorization/github/auth" class="btn btn-danger btn-block"><i class="fa fa-github"></i> Sign in with <b>Github</b></a>
         </div>
         <div class="or-seperator"><i>or</i></div>
         <div class="form-group">

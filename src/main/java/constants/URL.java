@@ -22,11 +22,8 @@ public class URL {
 
     public static final String LOGIN = "/login";
 
-    public static final String CLASS_FILTER = "/class";
-    public static final String MODIFIER_FILTER = "/section";
-    public static final String START_FILTER = "/index.jsp";
-    public static final String VK_AUTHORIZATION_FILTER = "/authorization/vk";
-
     public static final String VK_AUTHORIZATION = "/authorization/vk/auth";
     public static final String VK_TOKEN = "/authorization/vk/token";
+    public static final String GITHUB_TOKEN = "/authorization/github/token";
+    public static final String GITHUB_AUTHORIZATION = "/authorization/github/auth";
 }

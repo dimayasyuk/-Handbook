@@ -104,6 +104,16 @@
         <url-pattern>/authorization/vk/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>github</servlet-name>
+        <servlet-class>servlets.GithubServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>github</servlet-name>
+        <url-pattern>/authorization/github/*</url-pattern>
+    </servlet-mapping>
+
 
     <servlet>
         <servlet-name>class</servlet-name>
