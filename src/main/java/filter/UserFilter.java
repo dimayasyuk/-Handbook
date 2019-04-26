@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static java.util.Objects.isNull;
+
 public class UserFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) { }
@@ -21,7 +23,7 @@ public class UserFilter implements Filter {
 
         HttpSession session = req.getSession(true);
 
-        if(session.getAttribute("user")== null || session.getAttribute("role").equals(Constants.ADMIN_ROLE)) {
+        if(isNull(session.getAttribute("user")) || session.getAttribute("role").equals(Constants.ADMIN_ROLE)) {
             res.sendRedirect(Blanks.BASE_URL + URL.LOGIN);
         } else {
             filterChain.doFilter(servletRequest, servletResponse);

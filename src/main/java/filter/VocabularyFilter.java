@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 public class VocabularyFilter implements Filter {
 
     @Override
@@ -25,7 +27,7 @@ public class VocabularyFilter implements Filter {
 
         HttpSession session = req.getSession(true);
 
-        if (session.getAttribute("role").equals(Constants.ADMIN_ROLE)) {
+        if (nonNull(session.getAttribute("user")) && session.getAttribute("role").equals(Constants.ADMIN_ROLE)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             res.sendRedirect(Blanks.BASE_URL + URL.LOGIN);
