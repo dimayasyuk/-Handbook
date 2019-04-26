@@ -5,6 +5,7 @@ import constants.Blanks;
 import constants.Constants;
 import constants.URL;
 import dao.UserDao;
+import encrypt.PasswordEncryptor;
 import entities.Role;
 import entities.User;
 
@@ -28,7 +29,7 @@ public class LoginCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        User user = userDao.getUserByLoginAndPassword(login, password);
+        User user = userDao.getUserByLoginAndPassword(login, PasswordEncryptor.encrypt(password));
 
         if (Objects.nonNull(user)) {
             HttpSession session = request.getSession();

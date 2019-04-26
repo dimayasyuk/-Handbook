@@ -5,6 +5,7 @@ import constants.Blanks;
 import constants.Constants;
 import constants.URL;
 import dao.UserDao;
+import encrypt.PasswordEncryptor;
 import entities.Role;
 import entities.User;
 import org.apache.commons.httpclient.HttpClient;
@@ -56,11 +57,13 @@ public class VkAccessTokenCommand implements Command {
         User user = userDao.getUserByLogin(login);
 
         if (Objects.isNull(user)) {
-            Role role = userDao.getRoleByName(Constants.USER_ROLE);
-            userDao.insertUser(new User(name, surname, login, login, role.getId()));
+            String usedRole = userDao.countUsers() == 0 ? Constants.ADMIN_ROLE : Constants.USER_ROLE;
+            Role role = userDao.getRoleByName(usedRole);
+            userDao.insertUser(new User(name, surname, login, PasswordEncryptor.encrypt(login), role.getId()));
             session.setAttribute("user", userDao.getLastUser());
             session.setAttribute("role", role.getName());
-            response.sendRedirect(Blanks.BASE_URL + URL.LIST_SECTION);
+            String page = role.getName().equals(Constants.ADMIN_ROLE) ? URL.LIST_USER : URL.LIST_SECTION;
+            response.sendRedirect(Blanks.BASE_URL + page);
         } else {
             Role role = userDao.getRoleById(user.getRoleId());
             session.setAttribute("user", user);

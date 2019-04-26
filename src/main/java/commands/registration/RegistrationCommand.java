@@ -5,6 +5,7 @@ import constants.Blanks;
 import constants.Constants;
 import constants.URL;
 import dao.UserDao;
+import encrypt.PasswordEncryptor;
 import entities.Role;
 import entities.User;
 
@@ -32,7 +33,7 @@ public class RegistrationCommand implements Command {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        User user = new User(name, surname, login, password);
+        User user = new User(name, surname, login, PasswordEncryptor.encrypt(password));
 
         String usedRole = userDao.countUsers() == 0 ? Constants.ADMIN_ROLE : Constants.USER_ROLE;
         Role role = setUserRole(user, usedRole);

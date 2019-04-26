@@ -1,6 +1,7 @@
 package commands.login;
 
 import dao.UserDao;
+import encrypt.PasswordEncryptor;
 import entities.Role;
 import entities.User;
 import org.junit.Before;
@@ -61,7 +62,7 @@ public class LoginCommandTest {
 
         Mockito.when(mockRequest.getParameter(eq("login"))).thenReturn(user.getLogin());
         Mockito.when(mockRequest.getParameter(eq("password"))).thenReturn(user.getPassword());
-        Mockito.doReturn(user).when(userDao).getUserByLoginAndPassword(user.getLogin(), user.getPassword());
+        Mockito.doReturn(user).when(userDao).getUserByLoginAndPassword(user.getLogin(), PasswordEncryptor.encrypt(user.getPassword()));
         Mockito.doReturn(role).when(userDao).getRoleById(user.getRoleId());
         Mockito.doReturn(httpSession).when(mockRequest).getSession();
 
