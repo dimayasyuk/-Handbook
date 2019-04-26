@@ -16,7 +16,7 @@ public class RegisterServlet extends HttpServlet {
     private UserDao userDao;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             new GetRegistrationFormCommand().execute(req, resp);
         } catch (SQLException e) {
@@ -25,7 +25,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             new RegistrationCommand(userDao).execute(req, resp);
         } catch (SQLException e) {
@@ -41,5 +41,9 @@ public class RegisterServlet extends HttpServlet {
         String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 
         userDao = new UserDao(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

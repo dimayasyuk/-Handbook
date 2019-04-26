@@ -1,37 +1,37 @@
-package commands.section;
+package commands.registration;
 
 import constants.Blanks;
-import constants.URL;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import servlets.SectionServlet;
+import servlets.RegisterServlet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
 
+import java.io.IOException;
+
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.eq;
 
-public class NewSectionCommandTest {
+public class GetRegistrationFormCommandTest {
     private ServletContext servletContext;
     private HttpServletResponse mockResponse;
     private HttpServletRequest mockRequest;
 
     @Before
-    public void init() throws IOException, SQLException {
+    public void setUp() throws Exception {
         servletContext = Mockito.mock(ServletContext.class);
         mockRequest = Mockito.mock(HttpServletRequest.class);
         mockResponse = Mockito.mock(HttpServletResponse.class);
     }
 
     @Test
-    public void execute() throws IOException, SQLException, ServletException {
-        SectionServlet sectionServlet = new SectionServlet() {
+    public void execute() throws ServletException, IOException {
+        RegisterServlet registerServlet = new RegisterServlet() {
             public ServletContext getServletContext() {
                 return servletContext;
             }
@@ -39,12 +39,9 @@ public class NewSectionCommandTest {
 
         RequestDispatcher requestDispatcher = Mockito.mock(RequestDispatcher.class);
 
-        Mockito.when(mockRequest.getRequestURI()).thenReturn(Blanks.BASE_URL + URL.NEW_SECTION);
+        Mockito.when(mockRequest.getRequestDispatcher(eq(Blanks.REGISTRATION_FORM))).thenReturn(requestDispatcher);
 
-        Mockito.when(mockRequest.getRequestDispatcher(eq(Blanks.NEW_SECTION_PAGE))).thenReturn(requestDispatcher);
-
-        sectionServlet.init();
-        sectionServlet.doGet(mockRequest, mockResponse);
+        registerServlet.init();
+        registerServlet.doGet(mockRequest, mockResponse);
     }
-
 }

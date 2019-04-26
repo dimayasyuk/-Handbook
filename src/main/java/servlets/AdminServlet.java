@@ -22,7 +22,7 @@ public class AdminServlet  extends HttpServlet {
     private Map<String, Command> commands;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getRequestURI();
 
         try {
@@ -33,7 +33,7 @@ public class AdminServlet  extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
 
@@ -45,6 +45,11 @@ public class AdminServlet  extends HttpServlet {
         String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 
         userDao = new UserDao(jdbcDriver, jdbcURL, jdbcUsername, jdbcPassword);
+        initCommands();
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
         initCommands();
     }
 
