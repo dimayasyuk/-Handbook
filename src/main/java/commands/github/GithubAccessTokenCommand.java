@@ -44,8 +44,7 @@ public class GithubAccessTokenCommand implements Command {
     }
 
     private void validateUser(JSONObject userInfo, HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-        String login = String.valueOf(userInfo.get("login"));
-        String password = String.valueOf(userInfo.get("id"));
+        String login = String.valueOf(userInfo.get("id"));
         String fullname = String.valueOf(userInfo.get("name"));
         String[] names = fullname.split(" ");
         HttpSession session = request.getSession(true);
@@ -54,7 +53,7 @@ public class GithubAccessTokenCommand implements Command {
         if (Objects.isNull(user)) {
             String usedRole = userDao.countUsers() == 0 ? Constants.ADMIN_ROLE : Constants.USER_ROLE;
             Role role = userDao.getRoleByName(usedRole);
-            userDao.insertUser(new User(names[0], names[1], login, PasswordEncryptor.encrypt(password), role.getId()));
+            userDao.insertUser(new User(names[0], names[1], login, PasswordEncryptor.encrypt(login), role.getId()));
             session.setAttribute("user", userDao.getLastUser());
             session.setAttribute("role", role.getName());
             String page = role.getName().equals(Constants.ADMIN_ROLE) ? URL.LIST_USER : URL.LIST_SECTION;
